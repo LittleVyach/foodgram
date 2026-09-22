@@ -35,6 +35,7 @@ services:
       - "8888:80"
     volumes:
       - static:/app/static/
+      - static:/app/collected_static/
       - media:/app/media/
     depends_on:
       - backend
