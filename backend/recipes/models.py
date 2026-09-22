@@ -1,9 +1,7 @@
+from api.constants import (CHARFIELD_MAX_LENGTH, MAX_LENGTH_COLOR,
+                           MAX_LENGTH_INGREDIENT_NAME,
+                           MAX_LENGTH_MEASUREMENT_UNIT, SLUGFIELD_MAX_LENGTH)
 from django.db import models
-
-from api.constants import (
-    CHARFIELD_MAX_LENGTH, SLUGFIELD_MAX_LENGTH, MAX_LENGTH_COLOR,
-    MAX_LENGTH_INGREDIENT_NAME, MAX_LENGTH_MEASUREMENT_UNIT
-)
 from users.models import User
 
 

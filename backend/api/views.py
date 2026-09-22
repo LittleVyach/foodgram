@@ -1,28 +1,25 @@
-from django.db.models import Exists, OuterRef
-from django.shortcuts import get_object_or_404
-from djoser.views import UserViewSet as DjoserUserViewSet
-from django_filters.rest_framework import DjangoFilterBackend
-from django.http import HttpResponse
-from rest_framework import filters
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
 from collections import Counter
 
+from django.db.models import Exists, OuterRef
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from djoser.views import UserViewSet as DjoserUserViewSet
+from recipes.models import (Favorite, Follow, Ingredient, Recipe,
+                            RecipeIngredient, ShoppingCart, Tag)
+from rest_framework import filters, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from users.models import User
-from recipes.models import (
-    Tag, Ingredient, Recipe, ShoppingCart,
-    Favorite, RecipeIngredient, Follow
-)
-from .serializers import (
-    TagSerializer, IngredientSerializer, RecipeCreateSerializer,
-    RecipeReadSerializer, RecipeShortSerializer, FollowSerializer,
-    FollowListSerializer
-)
-from .permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
+
 from .filters import RecipeFilter
 from .pagination import LimitPageNumberPagination
+from .permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
+from .serializers import (FollowListSerializer, FollowSerializer,
+                          IngredientSerializer, RecipeCreateSerializer,
+                          RecipeReadSerializer, RecipeShortSerializer,
+                          TagSerializer)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):

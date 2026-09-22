@@ -1,7 +1,6 @@
 import csv
 
 from django.core.management.base import BaseCommand
-
 from recipes.models import Ingredient
 
 
@@ -19,7 +18,7 @@ class Command(BaseCommand):
                 for row in reader:
                     if len(row) >= 2:
                         Ingredient.objects.get_or_create(
-                            name=row[0], 
+                            name=row[0],
                             measurement_unit=row[1]
                         )
                         count += 1
