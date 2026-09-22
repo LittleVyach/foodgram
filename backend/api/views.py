@@ -169,7 +169,11 @@ class CustomUserViewSet(DjoserUserViewSet):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             subscription.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                FollowListSerializer(
+                    author, context={'request': request}).data,
+                status=status.HTTP_200_OK
+            )
 
     @action(
         detail=False,
