@@ -1,0 +1,41 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  
+  backend:
+    image: snowcat1/foodgram_backend:latest
+    restart: always
+    env_file: .env
+    volumes:
+      - static:/app/collected_static/
+      - media:/app/media
+    depends_on:
+      - db
+  
+  frontend:
+    image: snowcat1/foodgram_frontend:latest
+    env_file: .env
+    command: cp -r /app/build/. /static/
+    volumes:
+      - static:/static
+
+  gateway:
+    image: snowcat1/foodgram_gateway:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - static:/app/static/
+      - media:/app/media/
+    depends_on:
+      - backend
+      - frontend
