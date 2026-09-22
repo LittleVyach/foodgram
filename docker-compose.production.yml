@@ -32,7 +32,7 @@ services:
     image: snowcat1/foodgram_gateway:latest
     restart: always
     ports:
-      - "80:80"
+      - "8888:80"
     volumes:
       - static:/app/static/
       - media:/app/media/
