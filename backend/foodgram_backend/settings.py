@@ -20,7 +20,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '158.160.228.241', 'foodgramcat.hopto.org']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '158.160.228.241']
 
 
 INSTALLED_APPS = [
