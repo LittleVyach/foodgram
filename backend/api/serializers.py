@@ -159,6 +159,28 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             )
         return recipe
 
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop('tags', None)
+        ingredients_data = validated_data.pop('ingredients', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if tags_data is not None:
+            instance.tags.set(tags_data)
+
+        if ingredients_data is not None:
+            instance.recipe_ingredients.all().delete()
+
+            for ingredient_data in ingredients_data:
+                RecipeIngredient.objects.create(
+                    recipe=instance,
+                    ingredient=ingredient_data['id'],
+                    amount=ingredient_data['amount'],
+                )
+        return instance
+
     def to_representation(self, instance):
         """Возвращаем созданный рецепт через сериализатор чтения."""
         return RecipeReadSerializer(
