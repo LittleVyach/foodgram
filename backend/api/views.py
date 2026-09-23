@@ -24,6 +24,8 @@ from .serializers import (FollowListSerializer, FollowSerializer,
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
+    """Вьюсет для тегов."""
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -31,6 +33,8 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    """Вьюсет для ингредиентов."""
+
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (IsAdminOrReadOnly,)
@@ -40,6 +44,8 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
+    """Вьюсет для рецептов."""
+
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
     permission_classes = (IsAuthorOrReadOnly,)
@@ -135,6 +141,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 
 class CustomUserViewSet(DjoserUserViewSet):
+    """Вьюсет для пользователя."""
+
     queryset = User.objects.all()
     pagination_class = LimitPageNumberPagination
     permission_classes = (AllowAny,)

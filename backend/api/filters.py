@@ -6,6 +6,8 @@ from users.models import User
 
 
 class RecipeFilter(django_filters.FilterSet):
+    """Фильтрация для рецептов."""
+
     tags = django_filters.ModelMultipleChoiceFilter(
         field_name='tags__slug',
         to_field_name='slug',
@@ -34,4 +36,6 @@ class RecipeFilter(django_filters.FilterSet):
 
 
 class IngredientSearchFilter(filters.SearchFilter):
+    """Фильтрация для ингредиентов."""
+
     search_param = 'name'
