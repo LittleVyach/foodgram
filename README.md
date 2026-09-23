@@ -5,11 +5,16 @@
 Онлайн сервис для публикации рецептов, поиска кулинарного вдохновения и автоматического формирования списка покупок для похода в магазин.
 
 ## Технологии и стек:
-Backend: Python 3.12, Django, Django Rest Framework
-DataBase: PostgreSQL, Gunicorn
-Containerization: Docker, Docker Compose, Nginx
-CI/CD: Github Action
-Frontend: React
+<p>
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
+  <img src="https://img.shields.io/badge/DRF-092E20?style=for-the-badge&logo=django&logoColor=white" alt="DRF">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx">
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+</p>
 
 ## Основные возможности:
 Рецепты: Создание, редактирования, просмотр и удаление.
