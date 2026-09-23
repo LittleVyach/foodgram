@@ -32,16 +32,29 @@ class RecipeFilter(django_filters.FilterSet):
         if not request or not request.user.is_authenticated:
             return queryset.none()
 
-        recipe_ids = Favorite.objects.filter(
-            user=request.user).values_list('recipe_id', flat=True)
+        recipe_ids = list(Favorite.objects.filter(
+            user=request.user).values_list('recipe_id', flat=True))
+
+        if not recipe_ids:
+            return queryset.none()
+
         return queryset.filter(id__in=recipe_ids)
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
-        if value and self.request.user.is_authenticated:
-            recipe_ids = ShoppingCart.objects.filter(
-                user=self.request.user).values_list('recipe_id', flat=True)
-            return queryset.filter(id__in=recipe_ids)
-        return queryset
+        if not value:
+            return queryset
+
+        request = getattr(self, 'request', None)
+        if not request or not request.user.is_authenticated:
+            return queryset.none()
+
+        recipe_ids = list(ShoppingCart.objects.filter(
+            user=request.user).values_list('recipe_id', flat=True))
+
+        if not recipe_ids:
+            return queryset.none()
+
+        return queryset.filter(id__in=recipe_ids)
 
 
 class IngredientSearchFilter(filters.SearchFilter):
