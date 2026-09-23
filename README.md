@@ -47,6 +47,11 @@ ALLOWED_HOSTS=127.0.0.1, localhost
 ```
 docker compose up -d --build
 ```
+4. Выполните миграции и соберите статику:
+```
+docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py collectstatic --no-input
+```
 ## Деплой на удаленный сервер.
 1. Проверяет код линтером.
 2. Собирает и публикует Docker образы.
