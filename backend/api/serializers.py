@@ -34,6 +34,11 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             'first_name', 'last_name', 'password', 'avatar'
         )
 
+    def validate(self, attrs):
+        if 're_password' not in attrs and 'password' in attrs:
+            attrs['re_password'] = attrs['password']
+        return super().validate(attrs)
+
 
 class UserSerializer(serializers.ModelSerializer):
     """Сериализатор для вывода информации о пользователе."""
