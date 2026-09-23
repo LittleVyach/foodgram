@@ -195,3 +195,23 @@ class CustomUserViewSet(DjoserUserViewSet):
             pages, many=True, context={'request': request}
         )
         return self.get_paginated_response(serializer.data)
+
+    @action(
+        detail=False,
+        methods=['put', 'delete'],
+        permission_classes=[IsAuthenticated],
+        url_path='me/avatar'
+    )
+    def avatar(self, request):
+        user = request.user
+        if request.method == 'PUT':
+            serializer = self.get_serializer(
+                user, data=request.data, partial=True
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        if request.method == 'DELETE':
+            user.avatar.delete(save=True)
+            return Response(status=status.HTTP_204_NO_CONTENT)

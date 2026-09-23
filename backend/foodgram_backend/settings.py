@@ -134,6 +134,10 @@ DJOSER = {
         'user': ['rest_framework.permissions.AllowAny'],
         'user_list': ['rest_framework.permissions.AllowAny'],
     },
+    'VIEWS': {
+        'user-list': 'api.views.CustomUserViewSet',
+        'user-detail': 'api.views.CustomUserViewSet',
+    }
 }
 
 
