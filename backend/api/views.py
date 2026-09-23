@@ -139,6 +139,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
             'attachment; filename="shopping_cart.txt"')
         return response
 
+    @action(
+        detail=True,
+        methods=['get']
+        permission_classes=[AllowAny],
+        url_path='get-link'
+    )
+    def get_link(self, request, pk=None)
+        recipe = self.get_object()
+        short_link = f'https://{request.get_host()}/recipes/{recipe.id}'
+        return Response({'short-link': short_link}, status=status.HTTP_200_OK)
+
 
 class CustomUserViewSet(DjoserUserViewSet):
     """Вьюсет для пользователя."""
