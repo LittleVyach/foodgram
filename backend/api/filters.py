@@ -25,12 +25,12 @@ class RecipeFilter(django_filters.FilterSet):
         fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
 
     def filter_is_favorited(self, queryset, name, value):
-        if not value:
-            return queryset
-
         request = getattr(self, 'request', None)
         if not request or not request.user.is_authenticated:
             return queryset.none()
+
+        if not value:
+            return queryset
 
         recipe_ids = list(Favorite.objects.filter(
             user=request.user).values_list('recipe_id', flat=True))
@@ -41,12 +41,12 @@ class RecipeFilter(django_filters.FilterSet):
         return queryset.filter(id__in=recipe_ids)
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
-        if not value:
-            return queryset
-
         request = getattr(self, 'request', None)
         if not request or not request.user.is_authenticated:
             return queryset.none()
+
+        if not value:
+            return queryset
 
         recipe_ids = list(ShoppingCart.objects.filter(
             user=request.user).values_list('recipe_id', flat=True))
