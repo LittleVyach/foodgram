@@ -35,8 +35,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         )
 
     def validate(self, attrs):
-        if 're_password' not in attrs:
-            attrs['re_password'] = attrs.get('password')
+        attrs.pop('re_password', None)
         return super().validate(attrs)
 
 
