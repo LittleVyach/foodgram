@@ -145,7 +145,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=[AllowAny],
         url_path='get-link'
     )
-    def get_link(self, request, pk=None)
+    def get_link(self, request, pk=None):
         recipe = self.get_object()
         short_link = f'https://{request.get_host()}/recipes/{recipe.id}'
         return Response({'short-link': short_link}, status=status.HTTP_200_OK)
