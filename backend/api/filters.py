@@ -1,7 +1,7 @@
 import django_filters
 from rest_framework import filters
 
-from recipes.models import Recipe, Tag
+from recipes.models import Favorite, Recipe, ShoppingCart, Tag
 from users.models import User
 
 
@@ -26,12 +26,16 @@ class RecipeFilter(django_filters.FilterSet):
 
     def filter_is_favorited(self, queryset, name, value):
         if value and self.request.user.is_authenticated:
-            return queryset.filter(favorites__user=self.request.user)
+            recipe_ids = Favorite.objects.filter(
+                user=self.request.user).values_list('recipe_id', flat=True)
+            return queryset.filter(id__in=recipe_ids)
         return queryset
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
         if value and self.request.user.is_authenticated:
-            return queryset.filter(shopping_cart__user=self.request.user)
+            recipe_ids = ShoppingCart.objects.filter(
+                user=self.request.user).values_list('recipe_id', flat=True)
+            return queryset.filter(id__in=recipe_ids)
         return queryset
 
 
