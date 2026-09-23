@@ -56,7 +56,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         queryset = Recipe.objects.all()
         if user.is_anonymous:
             return queryset
-        return queryset.annotate(
+
+        queryset = queryset.annotate(
             is_favorited=Exists(
                 Favorite.objects.filter(user=user, recipe=OuterRef('pk'))
             ),
