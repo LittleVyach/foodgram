@@ -1,4 +1,6 @@
+from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from api.constants import (CHARFIELD_MAX_LENGTH, MAX_LENGTH_COLOR,
                            MAX_LENGTH_INGREDIENT_NAME,
@@ -24,8 +26,8 @@ class Tag(models.Model):
     )
 
     class Meta:
-        verbose_name = "Тег"
-        verbose_name_plural = "Теги"
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
         ordering = ('name',)
 
     def __str__(self):
@@ -49,7 +51,7 @@ class Ingredient(models.Model):
         ordering = ('name',)
         constraints = [
             models.UniqueConstraint(
-                fields=['name', 'measurement_unit'],
+                fields=('name', 'measurement_unit',),
                 name='unique_ingredient',
             )
         ]
@@ -92,11 +94,15 @@ class Recipe(models.Model):
         verbose_name='Ингредиенты',
         related_name='recipes'
     )
+    pub_date = models.DateTimeField(
+        verbose_name='Дата публикации',
+        default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ('-id',)
+        ordering = ('-pub_date',)
 
     def __str__(self):
         return self.name
@@ -118,7 +124,11 @@ class RecipeIngredient(models.Model):
         verbose_name='Ингредиент',
     )
     amount = models.PositiveIntegerField(
-        verbose_name='Количество'
+        validators=(
+            MinValueValidator(
+                1, message='Количество должно быть больше нуля!'),
+        ),
+        verbose_name='Количество',
     )
 
     class Meta:
@@ -170,7 +180,7 @@ class Favorite(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """Модель для корзины покупок"""
+    """Модель для корзины покупок."""
 
     user = models.ForeignKey(
         User,
