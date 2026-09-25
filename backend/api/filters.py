@@ -15,32 +15,10 @@ class RecipeFilter(django_filters.FilterSet):
     )
 
     author = django_filters.ModelChoiceFilter(queryset=User.objects.all())
-    is_favorited = django_filters.BooleanFilter(method='filter_is_favorited')
-    is_in_shopping_cart = django_filters.BooleanFilter(
-        method='filter_is_in_shopping_cart'
-    )
 
     class Meta:
         model = Recipe
-        fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
-
-    def filter_is_favorited(self, queryset, name, value):
-        request = getattr(self, 'request', None)
-        if not request or not request.user.is_authenticated:
-            return queryset.none()
-
-        if value:
-            return queryset.filter(is_favorited=True)
-        return queryset.filter(is_favorited=False)
-
-    def filter_is_in_shopping_cart(self, queryset, name, value):
-        request = getattr(self, 'request', None)
-        if not request or not request.user.is_authenticated:
-            return queryset.none()
-
-        if value:
-            return queryset.filter(is_in_shopping_cart=True)
-        return queryset.filter(is_in_shopping_cart=False)
+        fields = ('tags', 'author')
 
 
 class IngredientSearchFilter(filters.SearchFilter):
