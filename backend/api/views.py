@@ -9,8 +9,8 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from recipes.models import (Favorite, Ingredient, Recipe,
-                            RecipeIngredient, ShoppingCart, Tag)
+from recipes.models import (Favorite, Follow, Ingredient, Recipe,
+                            RecipeIngredient, ShoppingCart, Tag,)
 
 User = get_user_model()
 

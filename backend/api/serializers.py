@@ -349,7 +349,8 @@ class FollowSerializer(serializers.ModelSerializer):
                 'Нельзя подписываться на самого себя!'
             )
 
-        is_subscribed = Follow.objects.filter(user=user, author=author).exists()
+        is_subscribed = Follow.objects.filter(
+            user=user, author=author).exists()
 
         if request.method == 'POST' and is_subscribed:
             raise serializers.ValidationError(
