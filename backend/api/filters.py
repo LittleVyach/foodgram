@@ -30,9 +30,9 @@ class RecipeFilter(django_filters.FilterSet):
             return queryset.none()
 
         if value in (True, 'True', 'true', 1, '1'):
-            return queryset.filter(favorite__user=request.user)
+            return queryset.filter(favorites__user=request.user)
         elif value in (False, 'False', 0, '0'):
-            return queryset.exclude(favorite__user=request.user)
+            return queryset.exclude(favorites__user=request.user)
         return queryset
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
