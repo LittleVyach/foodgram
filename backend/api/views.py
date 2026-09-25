@@ -10,18 +10,17 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from recipes.models import (Favorite, Follow, Ingredient, Recipe,
-                            RecipeIngredient, ShoppingCart, Tag,)
-
-User = get_user_model()
+                            RecipeIngredient, ShoppingCart, Tag)
 
 from .filters import IngredientSearchFilter, RecipeFilter
 from .pagination import LimitPageNumberPagination
 from .permissions import IsAdminOrReadOnly, IsAuthenticatedAuthorOrReadOnly
-from .serializers import (
-    FavoriteSerializer, FollowListSerializer, FollowSerializer,
-    IngredientSerializer, RecipeCreateSerializer,
-    RecipeReadSerializer, ShoppingCartSerializer,
-    TagSerializer)
+from .serializers import (FavoriteSerializer, FollowListSerializer,
+                          FollowSerializer, IngredientSerializer,
+                          RecipeCreateSerializer, RecipeReadSerializer,
+                          ShoppingCartSerializer, TagSerializer)
+
+User = get_user_model()
 
 
 class ReadOnlyPaginationViewSet(viewsets.ReadOnlyModelViewSet):
