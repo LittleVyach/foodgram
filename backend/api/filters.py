@@ -1,7 +1,7 @@
 import django_filters
 from rest_framework import filters
 
-from recipes.models import Favorite, Recipe, ShoppingCart, Tag
+from recipes.models import Recipe, Tag
 from users.models import User
 
 
