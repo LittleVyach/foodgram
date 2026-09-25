@@ -114,8 +114,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def favorite(self, request, pk=None):
         if request.method == 'POST':
-            return self.add_to(FavoriteSerializer, request.user, pk)
-        return self.remove_from(FavoriteSerializer, request.user, pk)
+            return self.add_to(FavoriteSerializer, request, pk)
+        return self.remove_from(FavoriteSerializer, request, pk)
 
     @action(
         detail=True,
@@ -124,12 +124,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def shopping_cart(self, request, pk=None):
         if request.method == 'POST':
-            return self.add_to(ShoppingCartSerializer, request.user, pk)
-        return self.remove_from(ShoppingCartSerializer, request.user, pk)
+            return self.add_to(ShoppingCartSerializer, request, pk)
+        return self.remove_from(ShoppingCartSerializer, request, pk)
 
     @action(
         detail=False,
-        permission_classes=(IsAuthenticated),
+        permission_classes=(IsAuthenticated,),
     )
     def download_shopping_cart(self, request):
         ingredients = RecipeIngredient.objects.filter(
