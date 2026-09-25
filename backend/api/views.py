@@ -185,7 +185,7 @@ class UserViewSet(DjoserUserViewSet):
         author = self.get_object()
         serializer = FollowSerializer(
             data={},
-            context={'request': request}
+            context={'request': request, 'view': self}
         )
         serializer.is_valid(raise_exception=True)
 
