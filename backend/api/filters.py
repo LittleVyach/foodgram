@@ -30,14 +30,9 @@ class RecipeFilter(django_filters.FilterSet):
             return queryset.none()
 
         if value in (True, 'True', 'true', 1, '1'):
-            recipe_ids = Favorite.objects.filter(
-                user=request.user
-            ).values_list('recipe_id', flat=True)
-
-            if not recipe_ids:
-                return queryset.none()
-            return queryset.filter(id__in=recipe_ids)
-
+            return queryset.filter(favorite__user=request.user)
+        elif value in (False, 'False', 0, '0'):
+            return queryset.exclude(favorite__user=request.user)
         return queryset
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
@@ -46,14 +41,9 @@ class RecipeFilter(django_filters.FilterSet):
             return queryset.none()
 
         if value in (True, 'True', 'true', 1, '1'):
-            recipe_ids = ShoppingCart.objects.filter(
-                user=request.user
-            ).values_list('recipe_id', flat=True)
-
-            if not recipe_ids:
-                return queryset.none()
-            return queryset.filter(id__in=recipe_ids)
-
+            return queryset.filter(shopping_cart__user=request.user)
+        elif value in (False, 'False', 0, '0'):
+            return queryset.exclude(shopping_cart__user=request.user)
         return queryset
 
 

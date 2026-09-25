@@ -62,26 +62,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 Favorite.objects.filter(user=user, recipe=OuterRef('pk'))
             ),
             is_in_shopping_cart=Exists(
-                ShoppingCart.objects.filter(user=user, recipe=OuterRef)
+                ShoppingCart.objects.filter(user=user, recipe=OuterRef('pk'))
             ),
         )
-
-        is_favorited = self.request.query_params.get('is_favorited')
-        if is_favorited is not None:
-            if is_favorited in ('1', 'true', 'True'):
-                queryset = queryset.filter(is_favorited=True)
-            elif is_favorited in ('0', 'false', 'False'):
-                queryset = queryset.filter(is_favorited=False)
-
-        is_in_shopping_cart = self.request.query_params.get(
-            'is_in_shopping_cart')
-        if is_in_shopping_cart is not None:
-            if is_in_shopping_cart in ('1', 'true', 'True'):
-                queryset = queryset.filter(is_in_shopping_cart=True)
-            elif is_in_shopping_cart in ('0', 'false', 'False'):
-                queryset = queryset.filter(is_in_shopping_cart=False)
-
-        return queryset
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve'):
