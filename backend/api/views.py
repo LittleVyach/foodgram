@@ -235,6 +235,11 @@ class UserViewSet(DjoserUserViewSet):
             user.avatar.delete(save=True)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @action(
+        detail=False,
+        methods=('get', 'put', 'patch', 'delete'),
+        permission_classes=(AllowAny,)
+    )
     def me(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
