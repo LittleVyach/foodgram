@@ -58,7 +58,7 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if not request or not request.user.is_authenticated:
             return False
-        return Follow.objects.filter(user=request.user, author=obj).exists()
+        return obj.following.filter(user=request.user, author=obj).exists()
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -330,39 +330,32 @@ class FollowListSerializer(UserSerializer):
 class FollowSerializer(serializers.ModelSerializer):
     """Сериализатор для создания и удаления подписок."""
 
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = Follow
-        fields = ('user', 'author')
+        fields = ('author',)
 
     def validate(self, data):
-        request = self.context.get('request')
-        user = request.user
-
-        author_id = self.context.get('view').kwargs.get('id')
-        author = get_object_or_404(User, id=author_id)
+        user = self.context['request'].user
+        author = data['author']
 
         if user == author:
             raise serializers.ValidationError(
                 'Нельзя подписываться на самого себя!'
             )
 
-        is_subscribed = Follow.objects.filter(
-            user=user, author=author).exists()
-
-        if request.method == 'POST' and is_subscribed:
+        if user.follower.filter(author=author).exists():
             raise serializers.ValidationError(
                 'Вы уже подписаны на этого пользователя.'
             )
 
-        if request.method == 'DELETE' and not is_subscribed:
-            raise serializers.ValidationError(
-                'Вы не были подписаны на этого пользователя.'
-            )
-        data['author'] = author
         return data
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        author = validated_data['author']
+        return user.follower.create(author=author)
 
     def to_representation(self, instance):
         request = self.context.get('request')

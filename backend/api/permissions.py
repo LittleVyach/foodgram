@@ -4,6 +4,7 @@ from rest_framework import permissions
 class IsAuthenticatedAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
     """
     Разрешает чтение всем.
+
     Создание — аутентифицированным пользователям.
     Изменение/удаление — только автору объекта.
     """

@@ -22,7 +22,7 @@ class Tag(models.Model):
     color = models.CharField(
         max_length=MAX_LENGTH_COLOR,
         unique=True,
-        verbose_name="Цветовой код",
+        verbose_name='Цветовой код',
     )
 
     class Meta:

@@ -181,24 +181,27 @@ class UserViewSet(DjoserUserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def subscribe(self, request, id=None):
-        user = request.user
         author = self.get_object()
-        serializer = FollowSerializer(
-            data={},
-            context={'request': request, 'view': self}
-        )
-        serializer.is_valid(raise_exception=True)
 
         if request.method == 'POST':
-            serializer.save(user=user)
+            serializer = FollowSerializer(
+                data={'author': author.id},
+                context={'request': request, 'view': self}
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
             return Response(
                 FollowListSerializer(
-                    author, context={'request': request}).data,
+                    author, context={'request': request}
+                ).data,
                 status=status.HTTP_201_CREATED
             )
 
         if request.method == 'DELETE':
-            user.follower.filter(author=author).delete()
+            user = request.user
+            subscription = get_object_or_404(user.follower, author=author)
+            subscription.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
