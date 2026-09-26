@@ -13,6 +13,7 @@ class IsAuthenticatedAuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
         return (
             request.method in permissions.SAFE_METHODS
             or recipe.author == request.user
+            or request.user.is_staff
         )
 
 
