@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
+from djoser.serializers import UserSerializer as DjoserBaseUserSerializer
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -237,5 +238,5 @@ class UserViewSet(DjoserUserViewSet):
 
     def get_serializer_class(self):
         if not self.request.user.is_authenticated:
-            return DjoserUserViewSet.get_serializer_class(self)
+            return DjoserBaseUserSerializer
         return super().get_serializer_class()
