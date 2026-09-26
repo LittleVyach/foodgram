@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Exists, OuterRef, Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status, viewsets
@@ -109,7 +110,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=['post', 'delete'],
+        methods=('post', 'delete',),
         permission_classes=(IsAuthenticated,),
     )
     def favorite(self, request, pk=None):
@@ -140,14 +141,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ).annotate(
             total_amount=Sum('amount')
         )
-        shopping_list = []
-        for item in ingredients:
-            name = item['ingredient__name']
-            unit = item['ingredient__measurement_unit']
-            amount = item['total_amount']
-            shopping_list.append(f'{name} ({unit}) - {amount}')
-
-        text_file = '\n'.join(shopping_list)
+        text_file = '\n'.join(
+            f'{item["ingredient__name"]} '
+            f'({item["ingredient__measurement_unit"]}) - '
+            f'{item["total_amount"]}'
+            for item in ingredients
+        )
 
         response = HttpResponse(
             text_file, content_type='text/plain; charset=utf-8'
@@ -164,9 +163,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
     def get_link(self, request, pk=None):
         recipe = self.get_object()
-        path = f'/s{recipe.id}/'
-        short_link = request.build_absolute_uri(path)
-        return Response({'short-link': short_link})
+        path = reverse('short_link', kwargs={'pk': recipe.id})
+        short_url = request.build_absolute_uri(path)
+        return Response({'short-link': short_url}, status=status.HTTP_200_OK)
 
 
 class UserViewSet(DjoserUserViewSet):
@@ -235,3 +234,8 @@ class UserViewSet(DjoserUserViewSet):
         if request.method == 'DELETE':
             user.avatar.delete(save=True)
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer_class(self):
+        if not self.request.user.is_authenticated:
+            return DjoserUserViewSet.get_serializer_class(self)
+        return super().get_serializer_class()
