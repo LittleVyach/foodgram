@@ -236,7 +236,7 @@ class UserViewSet(DjoserUserViewSet):
             user.avatar.delete(save=True)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def get_serializer_class(self):
-        if not self.request.user.is_authenticated:
-            return DjoserBaseUserSerializer
-        return super().get_serializer_class()
+    def me(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return super().me(request, *args, **kwargs)
